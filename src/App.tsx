@@ -2,11 +2,12 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
+import { Character } from './type';
 
 // App コンポーネントの定義
 function App() {
   // キャラクター情報を保持するための状態
-  const [characters, setCharacters] = useState([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
 
   // コンポーネントのマウント時にキャラクター情報を取得
   useEffect(() => {
@@ -26,7 +27,7 @@ function App() {
       <main>
         <div className="cards-container">
           {/* 取得したキャラクター情報をマッピングしてカードを表示 */}
-          {characters.map((character: { id: number, images: string[] }) => {
+          {characters.map((character) => {
             return (
               <div className="card" key={character.id}>
                 <img 
@@ -39,6 +40,19 @@ function App() {
                   alt="character" 
                   className="card-image"
                 />
+                <div className="div card-content">
+                  <h3 className="card-title">{character.name}</h3>
+                  <p className="card-description">
+                    {/* キャラクターの説明があればそれを、なければ「説明なし」と表示 */}
+                    {character.debut?.appearsIn ?? 'Not'}
+                  </p>
+                  <div className="card-footer">
+                    <span className="affiliation">
+                      {/* キャラクターの所属があればそれを、なければ「所属なし」と表示 */}
+                      {character.personal?.affiliation ?? 'Not affiliation'}
+                    </span>
+                  </div>
+                </div>
               </div>
             );
           })}
