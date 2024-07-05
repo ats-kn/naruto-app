@@ -9,6 +9,8 @@ function App() {
   const [characters, setCharacters] = useState<Character[]>([]); // キャラクター情報を保持するための状態変数
   const [page, setPage] = useState(1); // ページ番号を保持するための状態変数
   const [isLoading, setIsLoading] = useState(false); // ローディング中かどうかを保持するための状態変数
+  const [isLastPage, setIsLastPage] = useState(false); // 最後のページかどうかを判定するためApp.tsxに
+  const MAX_ID = 1430; // idの最大値を定数として定義
 
   // コンポーネントのマウント時にキャラクター情報を取得
     useEffect(() => {
@@ -18,9 +20,18 @@ function App() {
   // API からキャラクター情報を取得する非同期関数
   const fetchCharacters = async (page: number) => {
     const apiUrl = 'https://narutodb.xyz/api/character';
+    const limit = 800;
     setIsLoading(true);
-    const response = await axios.get(apiUrl, {params: {page}});
-    setCharacters(response.data.characters);
+    try {
+      const response = await axios.get(apiUrl, { params: { page , limit} });
+      setCharacters(response.data.characters);
+      // 取得したキャラクターの中で最大のIDを見つける
+      const maxId = Math.max(...response.data.characters.map((char: Character) => char.id));
+      // 最大IDが1430であれば最終ページと判断
+      setIsLastPage(maxId === MAX_ID);
+    } catch (error) {
+      setIsLastPage(false);
+    }
     setIsLoading(false);
   };
 
@@ -79,13 +90,17 @@ function App() {
           </div>
           {/* ページャーのUI */}
           <div className="pager">
-            <button className="prev" onClick={handlePrev}>
-              Previous
-            </button>
+            {page > 1 && (
+              <button className="prev" onClick={handlePrev}>
+                Previous
+              </button>
+            )}
             <span className="page-number">{page}</span>
-            <button className="next" onClick={handleNext}>
-              Next
-            </button>
+            {!isLastPage && (
+              <button className="next" onClick={handleNext}>
+                Next
+              </button>
+            )}
           </div>
         </main>
       )}
