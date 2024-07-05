@@ -11,13 +11,13 @@ function App() {
 
   // コンポーネントのマウント時にキャラクター情報を取得
   useEffect(() => {
-    fetchCharacters();
+    fetchCharacters(5);
   }, []);
 
   // API からキャラクター情報を取得する非同期関数
-  const fetchCharacters = async () => {
+  const fetchCharacters = async (page: number) => {
     const apiUrl = 'https://narutodb.xyz/api/character';
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(apiUrl, {params: {page}});
     setCharacters(response.data.characters);
   };
 
@@ -56,6 +56,11 @@ function App() {
               </div>
             );
           })}
+        </div>
+        <div className="pager">
+          <button className="prev">Previous</button>
+          <span className="page-number">1</span>
+          <button className="next">Next</button>
         </div>
       </main>
     </div>
