@@ -51,6 +51,11 @@ function App() {
   // UI のレンダリング
   return (
     <div className="container">
+      <div className="header">
+        <div className="header-content">
+          <img src="logo.png" alt="logo" className="logo" />
+        </div>
+      </div>
       {isLoading ? (
         <div>Now Loading...</div>
       ) : (
