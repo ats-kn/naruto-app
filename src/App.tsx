@@ -20,10 +20,9 @@ function App() {
   // API からキャラクター情報を取得する非同期関数
   const fetchCharacters = async (page: number) => {
     const apiUrl = 'https://narutodb.xyz/api/character';
-    const limit = 800;
     setIsLoading(true);
     try {
-      const response = await axios.get(apiUrl, { params: { page , limit} });
+      const response = await axios.get(apiUrl, { params: { page } });
       setCharacters(response.data.characters);
       // 取得したキャラクターの中で最大のIDを見つける
       const maxId = Math.max(...response.data.characters.map((char: Character) => char.id));
