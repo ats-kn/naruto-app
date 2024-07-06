@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
 import { Character } from './type';
+import { Link } from 'react-router-dom';
 
 // App コンポーネントの定義
 function App() {
@@ -64,31 +65,33 @@ function App() {
             {/* 取得したキャラクター情報をマッピングしてカードを表示 */}
             {characters.map((character) => {
               return (
-                <div className="card" key={character.id}>
-                  <img 
-                    src={
-                      // キャラクターの画像があればそれを、なければダミー画像を表示
-                      character.images[0] != null
-                        ? character.images[0]
-                        : 'dummy.png'
-                    }
-                    alt="character" 
-                    className="card-image"
-                  />
-                  <div className="div card-content">
-                    <h3 className="card-title">{character.name}</h3>
-                    <p className="card-description">
-                      {/* キャラクターの説明があればそれを、なければ「説明なし」と表示 */}
-                      {character.debut?.appearsIn ?? 'Not'}
-                    </p>
-                    <div className="card-footer">
-                      <span className="affiliation">
-                        {/* キャラクターの所属があればそれを、なければ「所属なし」と表示 */}
-                        {character.personal?.affiliation ?? 'Not affiliation'}
-                      </span>
+                <Link to={`/character/${character.id}`} key={character.id} className="card-link">
+                  <div className="card" key={character.id}>
+                    <img 
+                      src={
+                        // キャラクターの画像があればそれを、なければダミー画像を表示
+                        character.images[0] != null
+                          ? character.images[0]
+                          : 'dummy.png'
+                      }
+                      alt="character" 
+                      className="card-image"
+                    />
+                    <div className="card-content">
+                      <h3 className="card-title">{character.name}</h3>
+                      <p className="card-description">
+                        {/* キャラクターの説明があればそれを、なければ「説明なし」と表示 */}
+                        {character.debut?.appearsIn ?? 'Not'}
+                      </p>
+                      <div className="card-footer">
+                        <span className="affiliation">
+                          {/* キャラクターの所属があればそれを、なければ「所属なし」と表示 */}
+                          {character.personal?.affiliation ?? 'Not affiliation'}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
