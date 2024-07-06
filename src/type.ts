@@ -8,7 +8,7 @@ export type Character = {
     personal: {
       affiliation: string;
     };
-    uniqueTraits: any;
-    natureType: any;
-    jutsu: any;
+    uniqueTraits:  string[];
+    natureType: string[];
+    jutsu: string[];
   };
